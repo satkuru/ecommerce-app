@@ -1,0 +1,67 @@
+services:
+  postgresql:
+    container_name: ec_postgresql
+    image: postgres
+    environment:
+      POSTGRES_USER: karthi
+      POSTGRES_PASSWORD: karthi
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: ec_pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-pgadmin}
+      PGADMIN_CONFIG_SERVER: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - 5050:80
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+
+  mongo:
+    container_name: ec_mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=karthi
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+
+  mongo_express:
+    image: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=karthi
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
+      - ME_CONFIG_MONGODB_SERVER=mongo
+    ports:
+      - "8081:8081"
+    restart: on-failure
+    links:
+      - mongo
+    depends_on:
+      - mongo
+
+
+
+
+networks:
+  ecommerce-network:
+    driver: bridge
+
+volumes:
+  postgres:
+  mongo:
+  pgadmin:
