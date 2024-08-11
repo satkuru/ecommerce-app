@@ -1,7 +1,7 @@
 services:
   postgresql:
     container_name: ec_postgresql
-    image: postgres
+    image: postgres:15.8
     environment:
       POSTGRES_USER: karthi
       POSTGRES_PASSWORD: karthi
@@ -31,31 +31,37 @@ services:
 
   mongo:
     container_name: ec_mongo
-    image: mongo
+    image: mongo:latest
     ports:
       - 27017:27017
     volumes:
-      - mongo:/data
+      - mongo:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=karthi
       - MONGO_INITDB_ROOT_PASSWORD=pass
 
   mongo_express:
-    image: mongo-express
+    image: mongo-express:latest
+    container_name: ec_mongo_express
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=karthi
       - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
       - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=pass
     ports:
       - "8081:8081"
-    restart: on-failure
-    links:
-      - mongo
+    entrypoint: [sh, -c, "sleep 20s && tini -- /docker-entrypoint.sh mongo-express"]
+    restart: always
     depends_on:
       - mongo
 
-
-
+  mail-dev:
+    container_name: ec_mail_dev
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
 
 networks:
   ecommerce-network:
