@@ -4,6 +4,7 @@ import com.karthi.ecommerce.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Data
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
