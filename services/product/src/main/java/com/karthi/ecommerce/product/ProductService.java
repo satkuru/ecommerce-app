@@ -80,7 +80,7 @@ public class ProductService {
                 throw new ProductPurchaseException("Requested product: %s is not in sufficient quantity to fulfil the request, quantity= %d".formatted(product.getName(), req.quantity()));
             }
             product.setStockLevel(product.getStockLevel() - req.quantity());
-            return mapper.fromProduct(product,req.quantity())
+            return mapper.fromProduct(product,req.quantity());
         }).collect(Collectors.toList());
 
         repository.saveAll(productsById.values());
