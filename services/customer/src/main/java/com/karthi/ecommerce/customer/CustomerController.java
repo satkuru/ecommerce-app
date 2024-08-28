@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/customer")
+@RequestMapping("/api/v1/customers")
 @RequiredArgsConstructor
 public class CustomerController {
     private final CustomerService service;
@@ -34,8 +34,8 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerResponse> getCustomer(
-            @PathVariable String id
+    public ResponseEntity<CustomerResponse> findById(
+            @PathVariable("id") String id
     ){
         return ResponseEntity.ok(service.findCustomerById(id));
     }

@@ -8,4 +8,4 @@ spring:
       database: customer
       authentication-database: admin
 server:
-  port: 8095
+  port: 8060
