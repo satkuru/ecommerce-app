@@ -5,6 +5,8 @@ import com.karthi.ecommerce.exception.BusinessException;
 import com.karthi.ecommerce.kafka.OrderProducer;
 import com.karthi.ecommerce.orderline.OrderLineRequest;
 import com.karthi.ecommerce.orderline.OrderLineService;
+import com.karthi.ecommerce.payment.PaymentClient;
+import com.karthi.ecommerce.payment.PaymentRequest;
 import com.karthi.ecommerce.product.ProductClient;
 import com.karthi.ecommerce.product.PurchaseRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class OrderService {
 
     private final CustomerClient customerClient;
     private final ProductClient productClient;
+    private final PaymentClient paymentClient;
     private final OrderMapper mapper;
     private final OrderRepository repository;
     private final OrderLineService orderLineService;
@@ -48,6 +51,13 @@ public class OrderService {
         }
 
         //do the payment
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer);
+        paymentClient.requestOrderPayment(paymentRequest);
 
         //Send notification of order confirmation
         orderProducer.sendOrderConfirmation(

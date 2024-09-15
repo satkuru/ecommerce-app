@@ -3,6 +3,8 @@ server:
 spring:
   cloud:
     gateway:
+      metrics:
+        enabled: true
       discovery:
         locator:
           enabled: true
@@ -14,7 +16,11 @@ spring:
         - id: order-service
           uri: lb:http://ORDER-SERVICE
           predicates:
-            - Path=/api/vi/orders/**
+            - Path=/api/v1/orders/**
+        - id: order-lines-service
+          uri: lb:http://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/order-lines/**
         - id: product-service
           uri: lb:http://PRODUCT-SERVICE
           predicates:
@@ -23,3 +29,11 @@ spring:
           uri: lb:http://PAYMENT-SERVICE
           predicates:
             - Path=/api/v1/payments/**
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: gateway

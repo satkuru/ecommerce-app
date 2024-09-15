@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 public class NotificationProducer {
     private final KafkaTemplate<String,PaymentNotification> kafkaTemplate;
 
-    public void sendPaymentNotification(PaymentNotification notification){
-        log.info("Send payment notification for order with id:{}",notification);
+    public void sendPaymentNotification(PaymentNotification paymentNotification){
+        log.info("Send payment notification for order with id:{}",paymentNotification);
         Message<PaymentNotification> message = MessageBuilder
-                .withPayload(notification)
+                .withPayload(paymentNotification)
                 .setHeader(KafkaHeaders.TOPIC, "payment-topic")
                 .build();
         kafkaTemplate.send(message);
