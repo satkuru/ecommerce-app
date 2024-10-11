@@ -5,8 +5,8 @@ spring:
     name: payment-service
   datasource:
     url: jdbc:postgresql://localhost:5432/payment
-    username: karthi
-    password: karthi
+    username: admin
+    password: pass
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

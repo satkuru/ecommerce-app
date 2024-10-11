@@ -3,8 +3,9 @@ services:
     container_name: ec_postgresql
     image: postgres:15.8
     environment:
-      POSTGRES_USER: karthi
-      POSTGRES_PASSWORD: karthi
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: product
       PGDATA: /var/lib/postgresql/data
     volumes:
       - postgres:/var/lib/postgresql/data
